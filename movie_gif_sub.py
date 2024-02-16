@@ -4,6 +4,9 @@ import argparse
 from moviepy.editor import *
 from moviepy.video.tools.subtitles import SubtitlesClip
 
+from color_print import *
+
+
 name = None
 movie_path = None
 subtitle_path = None
@@ -61,16 +64,17 @@ def parse_args():
 
 def get_subtitle_video(movie_path, subtitle_path, name) -> str:
     # Load the video clip
-    video_clip = VideoFileClip(movie_path, audio=False)
+    video_clip = VideoFileClip(
+        movie_path,
+        audio=False,
+        target_resolution=(gif_height, gif_width),
+    )
 
     # Get the subtitles
     subtitles = get_subtitles(subtitle_path)
 
     # Export the video
-    final = CompositeVideoClip(
-        [video_clip, subtitles],
-        size=(gif_width, gif_height),
-    )
+    final = CompositeVideoClip([video_clip, subtitles])
     filename = f"tmp/{name}_tmp.mp4"
     final.write_videofile(
         filename=filename,
@@ -99,8 +103,8 @@ def get_subtitles(path: str) -> SubtitlesClip:
 
 def video_into_gifs(name, video_path):
     # Output directory for GIFs with subtitles
-    output_gifs_no_subs = "output/gifs/"
-    output_gifs_with_subs = "output/gifs_subs/"
+    output_gifs_no_subs = f"output/gifs/{name}/"
+    output_gifs_with_subs = f"output/gifs_subs/{name}/"
 
     # Create the output directory if it doesn't exist
     if not os.path.exists(output_gifs_no_subs):
@@ -148,6 +152,39 @@ def process_video(name, movie_path, subtitle_path):
     video_into_gifs(name, video_path)
 
 
+def show_pre_process_report():
+    # Open the video file for getting duration
+    video = VideoFileClip(movie_path)
+    print_colored(f"Processing the file '{movie_path}'", "green")
+    print_colored(
+        f"\tDuration: {int(video.duration/60)}min {int(video.duration%60)}sec", "green"
+    )
+    print_colored(f"\tThe gifs will be named '{name}_000.gif'", "green")
+
+    print()
+
+    print_colored(f"Interval is {interval_gif} seconds", "blue")
+
+    print()
+
+    print_colored(
+        f"This will make about \t {int(video.duration / interval_gif)} gifs!", "yellow"
+    )
+    print_colored(f"The gifs will be {gif_width}w X {gif_height}h", "yellow")
+
+    print()
+
+    # Don't forget to close the video file
+    video.close()
+    cont = input("Do you wish to continue? (y/n) ")
+    if cont.lower() != "y":
+        print_colored("Exiting.", "red")
+        exit()
+    else:
+        print_colored("\nContinuing with gifs...\n", "green")
+
+
 if __name__ == "__main__":
     parse_args()
+    show_pre_process_report()
     process_video(name, movie_path, subtitle_path)
