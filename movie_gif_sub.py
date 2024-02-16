@@ -63,6 +63,12 @@ def parse_args():
 
 
 def get_subtitle_video(movie_path, subtitle_path, name) -> str:
+    # See if the file already exists
+    tmp_filename = f"tmp/{name}_tmp.mp4"
+    if os.path.exists(tmp_filename):
+        print_colored(f"Tmp file already exists for {tmp_filename}", "cyan")
+        return tmp_filename
+
     # Load the video clip
     video_clip = VideoFileClip(
         movie_path,
@@ -75,9 +81,8 @@ def get_subtitle_video(movie_path, subtitle_path, name) -> str:
 
     # Export the video
     final = CompositeVideoClip([video_clip, subtitles])
-    filename = f"tmp/{name}_tmp.mp4"
     final.write_videofile(
-        filename=filename,
+        filename=tmp_filename,
         fps=video_clip.fps,
     )
 
@@ -85,7 +90,7 @@ def get_subtitle_video(movie_path, subtitle_path, name) -> str:
     video_clip.close()
 
     # Return the filename
-    return filename
+    return tmp_filename
 
 
 def get_subtitles(path: str) -> SubtitlesClip:
