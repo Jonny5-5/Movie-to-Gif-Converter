@@ -138,7 +138,10 @@ def video_into_gifs(name, video_path):
         )
 
         # Write the segment as a GIF
-        segment.write_gif(gif_path, fps=10)  # Adjust the FPS as needed
+        # Adjust the FPS as needed
+        # video_with_subs.write_gif()
+        # Try different programs here ^ to see if one is faster
+        segment.write_gif(gif_path, fps=10)
 
         # Move to the next segment
         start_time = end_time
