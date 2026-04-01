@@ -1,7 +1,7 @@
 import os
 import argparse
 
-from moviepy.editor import *
+from moviepy import *
 from moviepy.video.tools.subtitles import SubtitlesClip
 
 from color_print import *
