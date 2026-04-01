@@ -1,20 +1,21 @@
-# Movie_to_Gif
- Transform movies into Gifs
+# Movie-to-Gif-Converter
+Transform movies into small Gifs  
+
+
+### Setup
+You will need to install the moviepy package as shown below.
+```
+pip install moviepy
+```
 
 
 ### File Structure
- You need the following structure
+The outputs will be placed in the `output` directory
 ```
-Movie_to_Gif
-├───movies
-│   ├───movie1
-│   └───movie2
+Movie-to-Gif-Converter
 ├───output
 │   ├───gifs
 │   └───gifs_subs
-├───subtitles
-│   ├───subtitle1
-│   └───subtitle2
 │
 └───movie_gif.py
 ```

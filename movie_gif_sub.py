@@ -11,7 +11,7 @@ name = None
 movie_path = None
 subtitle_path = None
 output_dir_no_subs = "output/gifs/"
-interval_gif = 3  # seconds
+interval_gif = 3  # seconds default
 gif_width = 640
 gif_height = 360
 
